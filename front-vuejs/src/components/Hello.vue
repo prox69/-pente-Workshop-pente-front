@@ -1,31 +1,35 @@
 <template>
-  <div class="hello">
+  <div>
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <br>
+    <svg width="760" height="760">
+      <line v-for="x in centers" :x1="pointToCoordinate(x)" :x2="pointToCoordinate(x)" :y1="pointToCoordinate(0)" :y2="pointToCoordinate(18)" stroke="black" stroke-width="1"></line>
+      <line v-for="y in centers" :y1="pointToCoordinate(y)" :y2="pointToCoordinate(y)" :x1="pointToCoordinate(0)" :x2="pointToCoordinate(18)" stroke="black" stroke-width="1"></line>
+      <circle cx="380" cy="380" r="4"></circle>
+      <!-- <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" /> -->
+    </svg>
   </div>
 </template>
 
 <script>
+
+import range from 'lodash/fp/range'
+
 export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Jeu de pente'
+    }
+  },
+  methods: {
+    pointToCoordinate: function (x) {
+      return x * 40 + 40 / 2.0
+    }
+  },
+  computed: {
+    centers: function () {
+      return range(0)(19)
     }
   }
 }

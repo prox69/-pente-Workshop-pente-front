@@ -1,13 +1,20 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <router-view></router-view>
+    <grid></grid>
   </div>
+
 </template>
 
 <script>
+
+import Grid from './game/Grid'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Grid
+  }
 }
 </script>
 
