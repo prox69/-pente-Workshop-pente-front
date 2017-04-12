@@ -1,34 +1,24 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <div v-if="showNewGamePrompt" class="app-prompt-overlay">
-      <div>
-        <!-- <md-dialog-prompt
-          :md-title="prompt.title"
-          :md-ok-text="prompt.ok"
-          v-model="value"
-          @open="onOpen"
-          @close="onClose"
-          ref="newGame">
-        </md-dialog-prompt> -->
-
-        <md-dialog md-open-from="#custom" md-close-to="#custom" ref="newGame">
-          <md-dialog-title>Choisissez un mode de jeu</md-dialog-title>
-          <md-dialog-content>
-            <md-button class="md-primary" @click.native="closeDialog('newGame')">Local</md-button>
-            <md-button class="md-primary" @click.native="closeDialog('newGame')">Remote</md-button>
-          </md-dialog-content>
-        </md-dialog>
-
-        <div class="app-prompt">
-          <h5>Welcome to VueGo</h5>
-          <!-- <mdl-button colored raised class="mdl-js-ripple-effect" @click="promptNewGame"> -->
-            New Game
-          <!-- </mdl-button> -->
+  <div id="app-container">
+    <div id="app">
+      <!-- <div v-if="showNewGamePrompt" class="app-prompt-overlay">
+        <div>
+          <div class="app-prompt">
+            <div class="md-display-1">Welcome to VuePente</div>
+            <br>
+            <md-button class="md-raised md-primary" @click="promptNewGame">Nouvelle partie</md-button>
+          </div>
         </div>
-      </div>
+      </div> -->
+      <board :local-current-turn="localCurrentTurn" :board="board"></board>
     </div>
-    <board :local-current-turn="localCurrentTurn" :board="board"></board>
+    <md-dialog md-open-from="#custom" md-close-to="#custom" ref="newGame">
+      <md-dialog-title>Choisissez un mode de jeu</md-dialog-title>
+      <md-dialog-content>
+        <md-button class="md-primary" @click.native="closeDialog('newGame')">Local</md-button>
+        <md-button class="md-primary" @click.native="closeDialog('newGame')">Remote</md-button>
+      </md-dialog-content>
+    </md-dialog>
   </div>
 
 </template>
@@ -80,6 +70,12 @@ export default {
     },
     onClose (type) {
       console.log('Closed', type)
+    },
+    promptNewGame: function () {
+      this.showNewGameDialog = true
+    },
+    hideNewGamePrompt: function () {
+      this.showNewGameDialog = false
     }
   },
   computed: {
@@ -111,13 +107,15 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
 }
 
 .app-prompt-overlay {
@@ -137,4 +135,29 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
+
+.app-prompt {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  background-color: #fff;
+  padding: 6px;
+}
+
+#app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  width: 100%;
+  padding: 24px 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  position: relative;
+}
+
 </style>
