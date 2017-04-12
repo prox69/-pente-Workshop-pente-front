@@ -1,19 +1,20 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <grid></grid>
+    <board></board>
   </div>
 
 </template>
 
 <script>
 
-import Grid from './game/Grid'
+import Board from './game/Board'
+import store from './game/store'
 
 export default {
-  name: 'app',
+  store,
   components: {
-    Grid
+    Board
   }
 }
 </script>
