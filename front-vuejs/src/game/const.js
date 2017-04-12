@@ -1,3 +1,3 @@
-const SCALE = 20;
+const SCALE = 20
 
-export { SCALE };
+export { SCALE }

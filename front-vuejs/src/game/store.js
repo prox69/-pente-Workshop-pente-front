@@ -8,7 +8,7 @@ import { BLACK, WHITE } from './color'
 
 export const state = {
   game_done: false,
-  board: matrix(9, 9),
+  board: matrix(19, 19),
   gameType: 'placeholder',
   current_turn: null,
   remoteInviteId: null,
