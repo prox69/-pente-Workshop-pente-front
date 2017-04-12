@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="Game.js"></script>
+	<script type="text/javascript" src="Alie.js"></script>
+	<script type="text/javascript" src="AlieMonteCarlo.js"></script>
+</head>
+<body>
+Bienvenue chez Alie
+<br>
+<button id="test">Tester</button>
+
+	<script type="text/javascript">
+
+		var temp_board = [
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,1,2,2,0,2,2,1,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,2,0,2,0,2,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			];
+
+		var alie = new Alie({ player : 1, opponent : 2});
+
+		document.getElementById('test').addEventListener('click', function() {
+			alie.initializeBoard(Game.cloneBoard(temp_board));
+			alie.generateWinRateTable();
+			console.log(alie.getBestStrike());
+		});
+
+	</script>
+</body>
+</html>
