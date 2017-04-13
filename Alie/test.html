@@ -3,28 +3,46 @@
 <head>
 	<title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="Game.js"></script>
+	<script type="text/javascript" src="Alie.js"></script>
+	<script type="text/javascript" src="AlieMonteCarlo.js"></script>
 </head>
 <body>
 Bienvenue chez Alie
 <br>
 <button id="test">Tester</button>
+<br>
+<div id="connect">
+	<input type='text' />
+	<button>Connecter</button>
+</div> <br>
+<div id="play">
+	<input type='text' id="pos_X" />
+	<input type='text' id="pos_Y" />
+	<button>Jouer</button>
+</div> <br>
+<div id="turn">
+	<button>InfoTurn</button>
+</div> 
+
+
 
 	<script type="text/javascript">
 
 		var temp_board = [
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,1,2,2,0,2,2,1,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,2,0,2,0,2,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -33,20 +51,76 @@ Bienvenue chez Alie
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			];
 
+		var players = {
+			"player1" : null,
+			"player2" : null
+		}
+
+		var playerTurn = 1;
+		var alie = new Alie({ player : 1, opponent : 2});
+
 
 			$("#test").click(function() {
+
+				alie.initializeBoard(Game.cloneBoard(temp_board));
+				alie.generateWinRateTable();
+				var bestStrike = alie.getBestStrike();
+				$("#play input#pos_X").val(bestStrike[0]);
+				$("#play input#pos_Y").val(bestStrike[1]);
+
+			});
+
+			$("#connect button").click(function() {
+				var jName = $("#connect input").val();
+
 				$(function() {
 					$.ajax({
-						method : 'POST',
-						url : "http://127.0.0.1/alie",
-						dataType : 'json',
-						data : { board : temp_board },
+						method : 'GET',
+						url : "http://5.196.143.42/connect/" + jName,
 						success: function(data) {
 							console.log(data);
+							if(typeof data.numJoueur != 'undefined')
+								players['player' + data.numJoueur] = data.idJoueur;
 						}
 					})
 				});
+			});			
+
+			$("#play button").click(function() {
+				if(playerTurn != 0) {
+					var p_x = $("#play input#pos_X").val();
+					var p_y = $("#play input#pos_Y").val();
+					var jId = players['player' + playerTurn];
+
+					$(function() {
+						$.ajax({
+							method : 'GET',
+							url : "http://5.196.143.42/play/" + p_x + "/" + p_y + "/" + jId,
+							success: function(data) {
+								console.log(data);
+							}
+						})
+					});
+				}
+
 			});
+
+			$("#turn button").click(function() {
+				var jId = playerTurn == 0 ? players['player1'] : players['player' + playerTurn];
+
+				$(function() {
+					$.ajax({
+						method : 'GET',
+						url : "http://5.196.143.42/turn/" + jId,
+						success: function(data) {
+							console.log(data);
+							if(data.status == 0)
+								playerTurn = playerTurn == 1 ? 2 : 1;
+							temp_board = data.tableau;
+						}
+					})
+				});
+			});	
 
 	</script>
 </body>
