@@ -44,7 +44,6 @@ export default {
   },
   computed: {
     viewBox: function () {
-      // console.log(`0 0 ${this.size * SCALE} ${this.size * SCALE}`);
       return `0 0 380 380`
     },
     cellSize: function () {
@@ -58,9 +57,7 @@ export default {
       // }
 
       let p = this.eventToPoint(event)
-      console.log(p)
       this.hover = this.isValidPoint(p) ? { x: p.x, y: p.y, color: 'black' } : null
-      console.log(this.hover)
     },
     mouseLeave: function () {
       this.hover = null
