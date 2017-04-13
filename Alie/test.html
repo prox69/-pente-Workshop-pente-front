@@ -2,9 +2,7 @@
 <html>
 <head>
 	<title></title>
-	<script type="text/javascript" src="Game.js"></script>
-	<script type="text/javascript" src="Alie.js"></script>
-	<script type="text/javascript" src="AlieMonteCarlo.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
 Bienvenue chez Alie
@@ -35,13 +33,20 @@ Bienvenue chez Alie
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			];
 
-		var alie = new Alie({ player : 1, opponent : 2});
 
-		document.getElementById('test').addEventListener('click', function() {
-			alie.initializeBoard(Game.cloneBoard(temp_board));
-			alie.generateWinRateTable();
-			console.log(alie.getBestStrike());
-		});
+			$("#test").click(function() {
+				$(function() {
+					$.ajax({
+						method : 'POST',
+						url : "http://127.0.0.1/alie",
+						dataType : 'json',
+						data : { board : temp_board },
+						success: function(data) {
+							console.log(data);
+						}
+					})
+				});
+			});
 
 	</script>
 </body>
