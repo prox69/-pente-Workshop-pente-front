@@ -34,7 +34,7 @@ class Game {
 	// Résolution des effets du coup joué
 	resolveStrike(x,y) {
 		// Vérification Pente
-		var align_pent_checks = this.checkAlignment(x,y,this.playerTurn,4);
+		var align_pent_checks = Game.checkAlignment(x,y,this.board,this.playerTurn,4);
 		var has_a_pente =  ((align_pent_checks[0] + align_pent_checks[4] + 1) >= 5)
 									  || ((align_pent_checks[1] + align_pent_checks[5] + 1) >= 5)
 									  || ((align_pent_checks[2] + align_pent_checks[6] + 1) >= 5)
@@ -48,7 +48,7 @@ class Game {
 	    // Vérification Tenaille
 	    if(!has_a_pente) {
 			var other_player = this.playerTurn == 1 ? 2 : 1;
-			var align_ten_checks = this.checkAlignment(x,y,other_player,2);
+			var align_ten_checks = Game.checkAlignment(x,y,this.board,other_player,2);
 			this.resolveTenaille(align_ten_checks,x,y);
 		}	
 	}
@@ -132,35 +132,35 @@ class Game {
 	/*************** METHODES UTILES **********************/
 
 	// Vérifie les alignements possibles de pions
-	checkAlignment(x,y,player,it) {
+	static checkAlignment(x,y,board,player,it) {
 		var align_pent_checks = [0,0,0,0,0,0,0,0];
 		var align_pent_breaks = [false,false,false,false,false,false,false,false];
 
 		for(var i = 1; i <= it; i++) {
 			if(x-i >= 0) {
 				if(y+i <= 18) {
-					if(!align_pent_breaks[1] && this.board[x-i][y+i] == player) { align_pent_checks[1] += 1; } else { align_pent_breaks[1] = true; }
+					if(!align_pent_breaks[1] && board[x-i][y+i] == player) { align_pent_checks[1] += 1; } else { align_pent_breaks[1] = true; }
 				}
 				if(y-i >= 0) {
-					if(!align_pent_breaks[7] && this.board[x-i][y-i] == player) { align_pent_checks[7] += 1; } else { align_pent_breaks[7] = true; }
+					if(!align_pent_breaks[7] && board[x-i][y-i] == player) { align_pent_checks[7] += 1; } else { align_pent_breaks[7] = true; }
 				}
-				if(!align_pent_breaks[0] && this.board[x-i][y] == player) { align_pent_checks[0] += 1; } else { align_pent_breaks[0] = true; }
+				if(!align_pent_breaks[0] && board[x-i][y] == player) { align_pent_checks[0] += 1; } else { align_pent_breaks[0] = true; }
 
 			}
 			if(x+i <= 18) {
 				if(y-i >= 0) {
-					if(!align_pent_breaks[5] && this.board[x+i][y-i] == player) { align_pent_checks[5] += 1; } else { align_pent_breaks[5] = true; }
+					if(!align_pent_breaks[5] && board[x+i][y-i] == player) { align_pent_checks[5] += 1; } else { align_pent_breaks[5] = true; }
 				}
 				if(y+i <= 18) {
-					if(!align_pent_breaks[3] && this.board[x+i][y+i] == player) { align_pent_checks[3] += 1; } else { align_pent_breaks[3] = true; } 
+					if(!align_pent_breaks[3] && board[x+i][y+i] == player) { align_pent_checks[3] += 1; } else { align_pent_breaks[3] = true; } 
 				}
-				if(!align_pent_breaks[4] && this.board[x+i][y] == player) { align_pent_checks[4] += 1; } else { align_pent_breaks[4] = true; }
+				if(!align_pent_breaks[4] && board[x+i][y] == player) { align_pent_checks[4] += 1; } else { align_pent_breaks[4] = true; }
 			}
 			if(y-i >= 0) {
-				if(!align_pent_breaks[6] && this.board[x][y-i] == player) { align_pent_checks[6] += 1; } else { align_pent_breaks[6] = true; }
+				if(!align_pent_breaks[6] && board[x][y-i] == player) { align_pent_checks[6] += 1; } else { align_pent_breaks[6] = true; }
 			}	
 			if(y+i <= 18) {
-				if(!align_pent_breaks[2] && this.board[x][y+i] == player) { align_pent_checks[2] += 1; } else { align_pent_breaks[2] = true; }
+				if(!align_pent_breaks[2] && board[x][y+i] == player) { align_pent_checks[2] += 1; } else { align_pent_breaks[2] = true; }
 			}	
 		}
 
@@ -168,17 +168,26 @@ class Game {
 	}
 
 	// Récupère les coordonnées de toutes les cases vides
-	static getAllEmptyCoords(board, exclude) {
+	static getAllEmptyCoords(board, exclude, lastPlayed, area) {
+		if(typeof lastPlayed == 'undefined' || typeof area == 'undefined')
+			lastPlayed = [];
+
 		var empty_coords = [];
 		for(var i = 0; i < board.length; i++) {
 			for(var j = 0; j < board[i].length; j++) {
 				if(board[i][j] == 0) {
 					if(typeof exclude == 'undefined' || (typeof exclude != 'undefined' && exclude[0] != i && exclude[1] != j)) {
-						empty_coords.push([i,j]);
+						if(lastPlayed.length == 0 || (lastPlayed.length != 0 && Math.abs(i - lastPlayed[0]) <= area &&  Math.abs(j - lastPlayed[1]) <= area)) {
+							empty_coords.push([i,j]);
+						}
 					}
 				}
 			}	
 		}
+
+		if(empty_coords.length == 0 && lastPlayed.length != 0) 
+			empty_coords = Game.getAllEmptyCoords(board, exclude, lastPlayed, area+1);
+
 		return empty_coords;
 	}
 

@@ -6,61 +6,70 @@
 	<script type="text/javascript" src="Game.js"></script>
 	<script type="text/javascript" src="Alie.js"></script>
 	<script type="text/javascript" src="AlieMonteCarlo.js"></script>
+	<meta charset="utf-8">
 </head>
 <body>
-Bienvenue chez Alie
+<h1>Bienvenue chez Alie</h1>
+
 <br>
-<button id="test">Tester</button>
+<div id="ip">
+	<input type='text' />
+	<button>Connecter Hôte</button>
+</div>
 <br>
+
 <div id="connect">
 	<input type='text' />
-	<button>Connecter</button>
+	<button>Connecter Usager</button>
 </div> <br>
-<div id="play">
+<!--<div id="play">
 	<input type='text' id="pos_X" />
 	<input type='text' id="pos_Y" />
 	<button>Jouer</button>
-</div> <br>
+</div> <br>-->
 <div id="turn">
-	<button>InfoTurn</button>
+	<button>Clear Turner</button>
 </div> 
 
 
 
 	<script type="text/javascript">
 
-		var temp_board = [
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-			];
+			var temp_board = [
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				];
 
-		var players = {
-			"player1" : null,
-			"player2" : null
-		}
+			var player_id = null;
+			var playerTurn = 0;
+			var alie = null;
 
-		var playerTurn = 1;
-		var alie = new Alie({ player : 1, opponent : 2});
+			var ip_host = null;
+			var turner = null;
+
+			$("#ip button").click(function() {
+				ip_host = $("#ip input").val();
+			});	
 
 
-			$("#test").click(function() {
+			/*$("#test").click(function() {
 
 				alie.initializeBoard(Game.cloneBoard(temp_board));
 				alie.generateWinRateTable();
@@ -68,7 +77,7 @@ Bienvenue chez Alie
 				$("#play input#pos_X").val(bestStrike[0]);
 				$("#play input#pos_Y").val(bestStrike[1]);
 
-			});
+			});*/
 
 			$("#connect button").click(function() {
 				var jName = $("#connect input").val();
@@ -76,51 +85,48 @@ Bienvenue chez Alie
 				$(function() {
 					$.ajax({
 						method : 'GET',
-						url : "http://5.196.143.42/connect/" + jName,
+						url : "http://" + ip_host + "/connect/" + jName,
 						success: function(data) {
-							console.log(data);
-							if(typeof data.numJoueur != 'undefined')
-								players['player' + data.numJoueur] = data.idJoueur;
+							alie = new Alie({ player : data.numJoueur, opponent : (data.numJoueur == 1) ? 2 : 1});
+							player_id = data.idJoueur;
+							turner = setInterval(function() { lauchTurner() }, 400);
 						}
 					})
 				});
 			});			
 
-			$("#play button").click(function() {
-				if(playerTurn != 0) {
-					var p_x = $("#play input#pos_X").val();
-					var p_y = $("#play input#pos_Y").val();
-					var jId = players['player' + playerTurn];
-
-					$(function() {
-						$.ajax({
-							method : 'GET',
-							url : "http://5.196.143.42/play/" + p_x + "/" + p_y + "/" + jId,
-							success: function(data) {
-								console.log(data);
-							}
-						})
-					});
-				}
-
+			$("#turn button").click(function() {
+				clearInterval(turner);
 			});
 
-			$("#turn button").click(function() {
-				var jId = playerTurn == 0 ? players['player1'] : players['player' + playerTurn];
 
+			function lauchTurner() {
 				$(function() {
 					$.ajax({
 						method : 'GET',
-						url : "http://5.196.143.42/turn/" + jId,
+						url : "http://" + ip_host + "/turn/" + player_id,
 						success: function(data) {
-							console.log(data);
-							if(data.status == 0)
-								playerTurn = playerTurn == 1 ? 2 : 1;
-							temp_board = data.tableau;
+							// On détecte le changement de tour
+							if(playerTurn == 0 && data.status == 1) {
+								playerTurn = 1;
+								alie.initializeBoard(Game.cloneBoard(data.tableau));
+								alie.generateWinRateTable();
+								var bestStrike = alie.getBestStrike();
+								console.log("Coup joué en " + bestStrike[0] + " - " + bestStrike[1]);
+								$.ajax({
+									method : 'GET',
+									url : "http://" + ip_host + "/play/" + bestStrike[0] + "/" + bestStrike[1] + "/" + player_id,
+									success: function(data) {
+		
+									}
+								});
+							}
+							playerTurn = data.status;
 						}
 					})
 				});
-			});	
+			}
+
 
 	</script>
 </body>
